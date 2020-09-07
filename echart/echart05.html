@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="echarts/dist/echarts.min.js"></script>
+        <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <!-- 引入bootstrap css-->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- 引入bootstrap javascript-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+
+</head>
+<body>
+	<body>
+            <!-- 建立bootscrap下拉選單 -->
+     <div class="form-group">
+        <label for="exampleFormControlSelect1">student score</label>
+        <!-- 建立用來呼叫的class ajaxtext-->
+        <select class="form-control ajaxtext" id="exampleFormControlSelect1">
+          <option>> 80</option>
+          <option>< 80</option>
+          <option>= 80</option>
+        </select>
+    </div>
+
+<!-- 建立按鈕 --> <!-- 建立用來呼叫的class buttonajax-->
+    <button type="button" class="btn btn-danger buttonajax">Danger</button>
+
+
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+        // 指定图表的配置项和数据
+        //先打x 與 y 軸
+        var option = {
+            title: {
+                text: 'ECharts 入门示例'
+            },
+            legend: {
+                data:['销量']
+            },
+            xAxis: {
+                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+            },
+            yAxis: {},
+            series: [{
+                name: '销量',
+                type: 'bar',
+                data: [5, 20, 36, 10, 10, 20]
+            }]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+        <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+        <script>
+        // click function
+        $(".buttonajax").click(function(){
+            //將選取項目帶入變數
+            var query = $(".ajaxtext ").val();
+            console.log(query);
+            //使用ajax交換資料
+            $.ajax({
+              //php位置
+              url: "/php/echart/echart05.php",
+              // 將資料 post 到 php
+              type: "post",
+              //放入資料，以及post變數
+              data: {
+                queryphp:query,
+              },
+              //成功後執行的函式（與getjson一樣）
+              success: function(rawdata){
+                //取得rawdata
+        var data = rawdata[0];
+        var data1 = data.data1
+        console.log(data1)
+        //使用map取得一個欄位
+        var dataStudent = data1.map(function (item) {
+              return item.name
+            });
+        console.log(dataStudent)
+
+        //使用map取得一個欄位
+        var dataScore = data1.map(function (item) {
+              return item.score
+            });
+        console.log(dataScore)
+
+                //重新定義option
+        var option = {
+            xAxis: {
+                data: dataStudent
+            },
+            yAxis: {},
+            series: [{
+                name: '销量',
+                type: 'bar',
+                data: dataScore
+            }]
+        };
+ //將option放入原始圖形
+        myChart.setOption(option);
+              }
+          })
+        })
+    </script>
+
+
+</body>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<!-- 引入 -->
+	<script src="echarts/dist/echarts.min.js"> </script>
+	<!-- jQuery -->
+	 <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+</head>
+<body>
+	<!-- 區域 -->
+	<div id="main" style="width: 600px;height: 400px;"></div>
+	<script type="text/javascript">
+		var myChart = echarts.init(document.getElementById('main'));
+		// 區域
+		var option = {
+			title:{
+				text: 'EChart入門範例'
+			},
+			lengend:{
+				data:['銷量']
+			},
+			xAxis:{
+				data:["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+			},
+			yAxis:{},
+			series:[{
+				name:'銷量',
+				type:'bar',
+				data:[5,20,36,10,10,20]
+			}]
+		};
+		// 顯示
+		myChart.setOption(option);
+	</script>
+	<script>
+		$.getJSON('/php/echart/echart04.html',function(rawdata){
+			console.log(rawdata);
+			var data = rawdata[0];
+			var data = data.data1;
+			console.log(data1);
+			var dataStudent = data1.map(function(item){
+				return item.name
+			});
+			console.log(dataStudent);
+			var dataScore = data1.map(function(item){
+				return item.score
+			});
+			console.log(dataScore);
+			var option = {
+				xAxis:{
+					type:'category',
+					data:dataStudent
+				},
+				yAxis:{
+					type:'value'
+				},
+				series:[{
+					type:'bar',
+					data:dataScore
+			}]
+		};
+		myChart.setOption(option);
+
+		})
+	</script>
+</body>
+</html>
